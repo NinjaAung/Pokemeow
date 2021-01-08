@@ -4,4 +4,3 @@ import time
 import csv
 import re
 load_dotenv()
-
