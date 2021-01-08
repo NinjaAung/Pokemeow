@@ -1,4 +1,6 @@
 import discord
+from dotenv import load_dotenv
+load_dotenv()
 
 client = discord.Client()
 
@@ -16,4 +18,4 @@ async def on_message(message):
         print(message.content)
 
 
-client.run('')
+client.run(TOKEN)
