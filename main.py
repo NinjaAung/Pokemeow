@@ -1,21 +1,7 @@
-import discord
+from selenium import webdriver
 from dotenv import load_dotenv
+import time
+import csv
+import re
 load_dotenv()
 
-client = discord.Client()
-
-@client.event
-async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
-
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send(';p')
-        print(message.content)
-
-
-client.run(TOKEN)
