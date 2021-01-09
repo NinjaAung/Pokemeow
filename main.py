@@ -2,6 +2,7 @@ from pynput.keyboard import Key, Controller
 from selenium import webdriver
 from dotenv import dotenv_values
 from time import sleep
+from datetime import datetime
 import csv
 import re
 
@@ -22,6 +23,9 @@ start_message = "Starting Count!"
 pokemeow = ";clan members"
 pokemeow_next = "next"
 pruning = "t@prune 5"
+
+def sanitazing(members,contrib,date):
+    for i in members
 
 sleep(2)
 
@@ -73,7 +77,17 @@ for i in range(0,4):
         contribution    = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[4]/div[2]/div/div/div[4]/div[2]/div[2]").text
         date_joined     = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[4]/div[2]/div/div/div[4]/div[3]/div[2]").text
         
-    print(date_joined)
+
+    #TODO: members strip from 2 index then rstrip
+    #TODO: Remove after |
+    #TODO: date use fromisoformat
+    #TODO: Combine list together after santization
+
+    print(f'''
+    members         : {members.splitlines()}
+    contribution    : {contribution.splitlines()}
+    date_joined     : {date_joined.splitlines()}
+    ''')
 
     for letter in pokemeow_next:
         keyboard.press(letter)
@@ -86,6 +100,7 @@ for letter in pruning:
     keyboard.release(letter)
 keyboard.press(Key.enter)
 keyboard.release(Key.enter)
+
 
 
 
