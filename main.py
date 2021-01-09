@@ -9,11 +9,11 @@ keyboard = Controller()
 config = dotenv_values(".env")
 
 driver = webdriver.Chrome("./drivers/chromedriver")
-driver.get("https://discord.com/channels/719694038088810506/740628046284980390")
+driver.get("https://discord.com/channels/719694038088810506/797292197811585066")
 
 username = config["USER_NAME"]
 password = config["USER_PASSWORD"]
-message = "***The following is a test!***"
+start_message = "Starting Count!"
 pokemeow = ";clan members"
 pokemeow_next = "next"
 
@@ -38,8 +38,7 @@ keyboard.press(Key.enter)
 keyboard.release(Key.enter)
 
 sleep(5)
-
-for letter in message:
+for letter in start_message:
     keyboard.press(letter)
     keyboard.release(letter)
 
@@ -55,9 +54,20 @@ for letter in pokemeow:
 keyboard.press(Key.enter)
 keyboard.release(Key.enter)
 
-for i in range(0,3):
+sleep(2)
+
+for i in range(0,4):
+    sleep(5)
+    try:
+        members = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[5]/div[2]/div/div/div[4]/div[1]/div[2]").text
+    except:
+        members = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[4]/div[2]/div/div/div[4]/div[1]/div[2]").text
+
+    print(members)
     for letter in pokemeow_next:
         keyboard.press(letter)
         keyboard.release(letter)
+    keyboard.press(Key.enter)
+    keyboard.release(Key.enter)
 
 
