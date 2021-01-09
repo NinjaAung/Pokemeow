@@ -9,13 +9,19 @@ keyboard = Controller()
 config = dotenv_values(".env")
 
 driver = webdriver.Chrome("./drivers/chromedriver")
-driver.get("https://discord.com/channels/719694038088810506/797292197811585066")
+
+# Random Corp Server
+# driver.get("https://discord.com/channels/719694038088810506/797292197811585066")
+
+# Testing
+driver.get("https://discord.com/channels/750761968067018859/797230922393976866")
 
 username = config["USER_NAME"]
 password = config["USER_PASSWORD"]
 start_message = "Starting Count!"
 pokemeow = ";clan members"
 pokemeow_next = "next"
+pruning = "t@prune 5"
 
 sleep(2)
 
@@ -69,5 +75,12 @@ for i in range(0,4):
         keyboard.release(letter)
     keyboard.press(Key.enter)
     keyboard.release(Key.enter)
+
+for letter in pruning:
+    keyboard.press(letter)
+    keyboard.release(letter)
+keyboard.press(Key.enter)
+keyboard.release(Key.enter)
+
 
 
