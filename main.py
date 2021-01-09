@@ -15,6 +15,7 @@ username = config["USER_NAME"]
 password = config["USER_PASSWORD"]
 message = "***The following is a test!***"
 pokemeow = ";clan members"
+pokemeow_next = "next"
 
 sleep(2)
 
@@ -53,4 +54,10 @@ for letter in pokemeow:
 
 keyboard.press(Key.enter)
 keyboard.release(Key.enter)
+
+for i in range(0,3):
+    for letter in pokemeow_next:
+        keyboard.press(letter)
+        keyboard.release(letter)
+
 
