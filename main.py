@@ -54,7 +54,7 @@ sleep(1)
 keyboard.press(Key.enter)
 keyboard.release(Key.enter)
 
-sleep(5)
+sleep(6)
 for letter in start_message:
     keyboard.press(letter)
     keyboard.release(letter)
@@ -84,14 +84,10 @@ for i in range(0,4):
         contribution    = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[4]/div[2]/div/div/div[4]/div[2]/div[2]").text.splitlines()
         date_joined     = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[4]/div[2]/div/div/div[4]/div[3]/div[2]").text.splitlines()
         
-    #TODO: date use fromisoformat
-    #TODO: Record to CSV
-
-
     sanitazing(member,contribution)
     members                 += member
-    members_join_date       += contribution
-    members_contribution    += date_joined
+    members_join_date       += date_joined 
+    members_contribution    += contribution
 
 
 
@@ -104,9 +100,30 @@ for i in range(0,4):
 for letter in pruning:
     keyboard.press(letter)
     keyboard.release(letter)
+
 keyboard.press(Key.enter)
 keyboard.release(Key.enter)
 
+Catch_Min=800
+with open('RandomCorp_Catches.csv', "a", newline='') as f:
+    fieldnames = ["Member","Today's Catch","Days Joined","Average Catch Rate"]
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    for i in range(0,len(members)):
+        timedelta = datetime.now() - datetime.fromisoformat(members_join_date[i])
+        if timedelta.days <= 0:
+            avg  = 0
+            days = 0
+            
+        else:
+            avg  = int(members_contribution[i].replace(",","")) / int(timedelta.days)
+            days = timedelta.days
+
+        writer.writerow({"Member":members[i],"Today's Catch":members_contribution[i],"Days Joined":days,"Average Catch Rate":avg})
 
 
 
+
+sleep(2)
+
+driver.close()
