@@ -1,10 +1,11 @@
 from pynput.keyboard import Key, Controller
 from selenium import webdriver
 from dotenv import dotenv_values
-from time import sleep
 from datetime import datetime
+from time import sleep
 import csv
 import re
+
 
 keyboard = Controller()
 config = dotenv_values(".env")
@@ -119,7 +120,7 @@ with open('RandomCorp_Catches.csv', "a", newline='') as f:
             avg  = int(members_contribution[i].replace(",","")) / int(timedelta.days)
             days = timedelta.days
 
-        writer.writerow({"Member":members[i],"Today's Catch":members_contribution[i],"Days Joined":days,"Average Catch Rate":avg})
+        writer.writerow({"Member":members[i],"Today's Catch":members_contribution[i].replace(",",""),"Days Joined":days,"Average Catch Rate":avg})
 
 
 
