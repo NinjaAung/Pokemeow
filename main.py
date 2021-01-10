@@ -9,6 +9,10 @@ import re
 keyboard = Controller()
 config = dotenv_values(".env")
 
+members                 = []
+members_join_date       = []
+members_contribution    = []
+
 driver = webdriver.Chrome("./drivers/chromedriver")
 
 # Random Corp Server
@@ -24,8 +28,11 @@ pokemeow = ";clan members"
 pokemeow_next = "next"
 pruning = "t@prune 5"
 
-def sanitazing(members,contrib,date):
-    for i in members
+def sanitazing(members,contrib):
+    for i in range(0,len(members)):
+        members[i]  = members[i][3:].strip()
+        contrib[i]  = re.sub(r"\|.*","",contrib[i]).strip()
+
 
 sleep(2)
 
@@ -69,25 +76,24 @@ sleep(2)
 for i in range(0,4):
     sleep(2)
     try:
-        members         = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[5]/div[2]/div/div/div[4]/div[1]/div[2]").text
-        contribution    = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[5]/div[2]/div/div/div[4]/div[2]/div[2]").text
-        date_joined     = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[5]/div[2]/div/div/div[4]/div[3]/div[2]").text
+        member          = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[5]/div[2]/div/div/div[4]/div[1]/div[2]").text.splitlines()
+        contribution    = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[5]/div[2]/div/div/div[4]/div[2]/div[2]").text.splitlines()
+        date_joined     = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[5]/div[2]/div/div/div[4]/div[3]/div[2]").text.splitlines()
     except:
-        members         = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[4]/div[2]/div/div/div[4]/div[1]/div[2]").text
-        contribution    = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[4]/div[2]/div/div/div[4]/div[2]/div[2]").text
-        date_joined     = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[4]/div[2]/div/div/div[4]/div[3]/div[2]").text
+        member          = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[4]/div[2]/div/div/div[4]/div[1]/div[2]").text.splitlines()
+        contribution    = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[4]/div[2]/div/div/div[4]/div[2]/div[2]").text.splitlines()
+        date_joined     = driver.find_element_by_xpath("/html/body/div/div[2]/div/div[2]/div/div/div/div[2]/div[2]/div/main/div[1]/div/div/div/div[4]/div[2]/div/div/div[4]/div[3]/div[2]").text.splitlines()
         
-
-    #TODO: members strip from 2 index then rstrip
-    #TODO: Remove after |
     #TODO: date use fromisoformat
-    #TODO: Combine list together after santization
+    #TODO: Record to CSV
 
-    print(f'''
-    members         : {members.splitlines()}
-    contribution    : {contribution.splitlines()}
-    date_joined     : {date_joined.splitlines()}
-    ''')
+
+    sanitazing(member,contribution)
+    members                 += member
+    members_join_date       += contribution
+    members_contribution    += date_joined
+
+
 
     for letter in pokemeow_next:
         keyboard.press(letter)
