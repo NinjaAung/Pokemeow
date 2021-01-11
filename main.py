@@ -118,9 +118,10 @@ new_days                    = sheet.range('J2:J51')
 
 
 
-#TODO: Record everything to gspread
 for i in range(0,len(members)):
     timedelta = datetime.now() - datetime.fromisoformat(members_join_date[i])
+    if members[i] == "":
+        members[i] = ":fries:"
     if timedelta.days <= 0:
         avg  = 0
         days = 0
@@ -142,7 +143,18 @@ print("Contrinutions Added ✅")
 sheet.update_cells(new_days)
 print("Stay Added ✅")
 
+#TODO: If a member leaves delete that row then format
 
+past_members_list = sheet.range('C2:C51')
+for i in range(len(past_members_list)):
+    if not past_members_list[i].value in members:
+        if past_members_list[i].value == "":
+            break
+        print(past_members_list[i].value)
+        sheet.update_cell(past_members_list[i].row,1,"")
+        sheet.update_cell(past_members_list[i].row,2,"")
+        sheet.update_cell(past_members_list[i].row,3,"")
+        sheet.update_cell(past_members_list[i].row,6,"1")
 
 sleep(2)
 
