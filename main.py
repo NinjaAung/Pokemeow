@@ -1,11 +1,17 @@
-from pynput.keyboard import Key, Controller
-from selenium import webdriver
-from dotenv import dotenv_values
-from datetime import datetime
-from time import sleep
-import csv
+from oauth2client.service_account   import ServiceAccountCredentials
+from pynput.keyboard                import Key, Controller
+from selenium                       import webdriver
+from dotenv                         import dotenv_values
+from datetime                       import datetime
+from time                           import sleep
+import gspread
 import re
 
+scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/spreadsheets']
+creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json",scope)
+client = gspread.authorize(creds)
+
+sheet = client.open_by_key("1hgHs8gCUOWnUsCBMw122XTSQeLCzRMa1C1FXT_OusnI").sheet1
 
 keyboard = Controller()
 config = dotenv_values(".env")
@@ -105,23 +111,36 @@ for letter in pruning:
 keyboard.press(Key.enter)
 keyboard.release(Key.enter)
 
-Catch_Min=800
-with open('RandomCorp_Catches.csv', "a", newline='') as f:
-    fieldnames = ["Member","Today's Catch","Days Joined","Average Catch Rate"]
-    writer = csv.DictWriter(f, fieldnames=fieldnames)
-    writer.writeheader()
-    for i in range(0,len(members)):
-        timedelta = datetime.now() - datetime.fromisoformat(members_join_date[i])
-        if timedelta.days <= 0:
-            avg  = 0
-            days = 0
-            
-        else:
-            avg  = int(members_contribution[i].replace(",","")) / int(timedelta.days)
-            days = timedelta.days
 
-        writer.writerow({"Member":members[i],"Today's Catch":members_contribution[i].replace(",",""),"Days Joined":days,"Average Catch Rate":avg})
+new_member_cells_list       = sheet.range('H2:H51')
+new_contribution_cells_list = sheet.range('I2:I51')
+new_days                    = sheet.range('J2:J51')
 
+
+
+#TODO: Record everything to gspread
+for i in range(0,len(members)):
+    timedelta = datetime.now() - datetime.fromisoformat(members_join_date[i])
+    if timedelta.days <= 0:
+        avg  = 0
+        days = 0
+        
+    else:
+        avg  = int(members_contribution[i].replace(",","")) / int(timedelta.days)
+        days = timedelta.days
+
+    new_member_cells_list[i].value          = members[i]
+    new_contribution_cells_list[i].value    = members_contribution[i]
+    new_days[i].value                       = days
+
+#TODO: if user dosen't  exsist create a new row
+
+sheet.update_cells(new_member_cells_list)
+print("Members Added ✅")
+sheet.update_cells(new_contribution_cells_list)
+print("Contrinutions Added ✅")
+sheet.update_cells(new_days)
+print("Stay Added ✅")
 
 
 
