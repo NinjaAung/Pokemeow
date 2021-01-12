@@ -2,4 +2,4 @@
 .DS_Store
 creds.json
 test.py
-.vs_code/
+.vscode/
