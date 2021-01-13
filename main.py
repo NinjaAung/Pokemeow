@@ -7,16 +7,20 @@ from time                           import sleep
 import gspread
 import re
 
-# Google Creds
-scope  = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/spreadsheets']
-creds  = ServiceAccountCredentials.from_json_keyfile_name("creds.json",scope)
-client = gspread.authorize(creds)
-sheet  = client.open_by_key("1THmPwG9om9FSzDfL8gYYUqCrXjie1Dtl-5YVta7eMSQ").sheet1
-
 # Config
 config   = dotenv_values(".env")
 USERNAME = config["USER_NAME"]
 PASSWORD = config["USER_PASSWORD"]
+CHANNEL  = config["CALC_CHANNEL"]
+SHEET    = config["GOOGLE_SHEET"]
+
+# Google Creds
+scope  = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/spreadsheets']
+creds  = ServiceAccountCredentials.from_json_keyfile_name("creds.json",scope)
+client = gspread.authorize(creds)
+sheet  = client.open_by_key(SHEET).sheet1
+
+
 
 # Messages
 start_message   = "Starting Count!"
@@ -32,7 +36,7 @@ curr_members_contribution = []
 
 driver   = webdriver.Chrome("./drivers/chromedriver")
 keyboard = Controller()
-driver.get("https://discord.com/channels/719694038088810506/797292197811585066")
+driver.get(CHANNEL)
 keyboard = Controller()
 
 def sanitazing(members:list,contrib:list):
