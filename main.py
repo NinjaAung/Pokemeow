@@ -113,63 +113,49 @@ if data_exist:
         member_contribution_dic[curr_members_list[i].value] = curr_members_contribution[i]
 
     print("Checking if Members Left:")
+    member_left_list = []
+    update = []
     for i in range(len(past_members_list)): # Deleting Members
-        if not past_members_list[i].value in curr_members:
-            if past_members_list[i].value == "":
+        cell = past_members_list[i]
+        if not cell.value in curr_members:
+            if cell.value == "":
                 break
-            sheet.update_cell(past_members_list[i].row,past_members_list[i].col-2,"") # Yesterday
-            sheet.update_cell(past_members_list[i].row,past_members_list[i].col-1,"") # Today
-            sheet.update_cell(past_members_list[i].row,past_members_list[i].col,"")   # Member
-            print(f'\t{past_members_list[i].value} Deleted ✅')
+            for i in range(0,3):
+                member_left_list.append(gspread.models.Cell(cell.row,cell.col-i,""))
+            print(f'\t{cell.value} Deleted ✅')
         else:
-            member_cell = sheet.find(past_members_list[i].value,None,6)
-            sheet.update_cell(member_cell.row,member_cell.col-1,member_contribution_dic[past_members_list[i].value])
+            cell = sheet.find(past_members_list[i].value,None,6)
+            cell_today = gspread.models.Cell(cell.row,cell.col-1,member_contribution_dic[past_members_list[i].value])
+            update.append(cell_today)
 
+    sheet.update_cells(member_left_list,'USER_ENTERED')
+    sheet.update_cells(update, 'USER_ENTERED')
     sheet.sort((5,"des"),range="D2:F51")
 
     print("Checking if Members Joined:")
+    member_added = 1
+    past_members = [i.value for i in past_members_list]
+    update = []
     for i in range(0,len(curr_members)): # Adding Members
-        try:
-            sheet.find(curr_members[i],None,6)
-        except:
-            sheet.update_cell(past_members_list[49].row,past_members_list[i].col-2,"0")                               # Yesterday
-            sheet.update_cell(past_members_list[49].row,past_members_list[i].col-1,str(curr_members_contribution[i])) # Today
-            sheet.update_cell(past_members_list[49].row,past_members_list[i].col,str(curr_members[i]))                # Member
-            sheet.sort((5,"des"),range="D2:F51")
+        cell = past_members_list[i]
+        if not curr_members[i] in past_members:
+            empty = len(past_members) - member_added
+            cell_list = sheet.range(f"D{empty}:F{empty}")
+            cell_list[0].value = "0"                            # Yesterday
+            cell_list[1].value = curr_members_contribution[i]   # Today
+            cell_list[2].value = curr_members[i]                # Member
+            member_added += 1
+            update += cell_list
             print(f'\t{past_members_list[i].value} Added ✅')
 
+    sheet.update_cells(update,'USER_ENTERED')
+    sheet.sort((5,"des"),range="D2:F51")
     sheet.update_cells(cell_list_days,'USER_ENTERED')
     print("Days Updated")
 
     if REWARD:
         if not datetime.today().weekday() in [5,6]:
-            print("not yet")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            print("Not Available!")
     
 else:
     cell_list_contribution  = sheet.range('E2:E51')
