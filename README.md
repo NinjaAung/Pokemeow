@@ -7,7 +7,7 @@ Pokemeow is a script use to interact with the Pokemeow Bot for clan statistics t
 Download with [zip](https://github.com/NinjaAung/Pokemeow/archive/main.zip) or with cli:
 
 ```bash
-git clone https://github.com/ninjaaung
+git clone https://github.com/ninjaaung/pokemeow
 ```
 
 Create and add to .env
