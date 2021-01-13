@@ -6,14 +6,27 @@ Pokemeow is a script use to interact with the Pokemeow Bot for clan statistics t
 
 Download with [zip](https://github.com/NinjaAung/Pokemeow/archive/main.zip) or with cli:
 
-```
+```bash
 git clone https://github.com/ninjaaung
 ```
 
-Add to .env
+Create and add to .env
+
+```env
+USER_NAME=       # Discord Username
+USER_PASSWORD=   # Discord Password
+CALC_CHANNEL=    # Channel Url to do calculations in (Use discord on your browser to find this)
+GOOGLE_SHEET_ID= # ID of Google sheet (Found in URL)
 ```
-USER_NAME=
-USER_PASSWORD=
-CALC_CHANNEL=
-GOOGLE_SHEET_ID=
-``
+
+Install all modules
+
+```bash
+pip3 install -r requirements.txt
+```
+***On discord please make sure your calc channel is always empty!***<br>
+Then make sure you add your creds.json from google service account and all you have to do is run
+
+```bash
+python3 main.py
+```
