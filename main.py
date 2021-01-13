@@ -32,7 +32,13 @@ curr_members              = []
 curr_members_join_date    = []
 curr_members_contribution = []
 
-driver   = webdriver.Chrome("./drivers/chromedriver")
+try: 
+    driver   = webdriver.Chrome("./drivers/chromedriver")
+except:
+    print("Incompatable Version: Refer to https://stackoverflow.com/questions/38833589/oserror-errno-8-exec-format-error-selenium")
+    print(f"\n\n {sys.exc_info()}")
+    exit()
+
 keyboard = Controller()
 driver.get(str(CHANNEL))
 keyboard = Controller()
