@@ -20,8 +20,6 @@ creds  = ServiceAccountCredentials.from_json_keyfile_name("creds.json",scope)
 client = gspread.authorize(creds)
 sheet  = client.open_by_key(SHEET).sheet1
 
-
-
 # Messages
 start_message   = "Starting Count!"
 pokemeow        = ";clan members"
@@ -36,7 +34,7 @@ curr_members_contribution = []
 
 driver   = webdriver.Chrome("./drivers/chromedriver")
 keyboard = Controller()
-driver.get(CHANNEL)
+driver.get(str(CHANNEL))
 keyboard = Controller()
 
 def sanitazing(members:list,contrib:list):
@@ -71,7 +69,7 @@ def data_recording(contribution_cell_range:list,member_cell_range:list,days_cell
 typing(USERNAME,2)
 typing(PASSWORD,2)
 typing(start_message,6)
-typing(pokemeow,1)
+typing(pokemeow,2)
 
 
 for i in range(0,4):
@@ -159,8 +157,11 @@ if data_exist:
 
     if REWARD:
         if not datetime.today().weekday() in [5,6]:
-            print("Not Available!")
-    
+            Daily_Catch = sheet.range('G2:G51')
+            print("Congrats")
+            for i in range(0,len(Daily_Catch)):
+                if int(Daily_Catch[i].value.replace(",","")) >= 1500:
+                    print(sheet.cell(Daily_Catch[i].row,Daily_Catch[i].col-1).value)
 else:
     cell_list_contribution  = sheet.range('E2:E51')
     cell_list_member        = sheet.range('F2:F51')
