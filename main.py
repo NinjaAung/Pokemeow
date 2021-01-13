@@ -12,13 +12,13 @@ config   = dotenv_values(".env")
 USERNAME = config["USER_NAME"]
 PASSWORD = config["USER_PASSWORD"]
 CHANNEL  = config["CALC_CHANNEL"]
-SHEET    = config["GOOGLE_SHEET"]
+SHEET_ID    = config["GOOGLE_SHEET_ID"]
 
 # Google Creds
 scope  = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/spreadsheets']
 creds  = ServiceAccountCredentials.from_json_keyfile_name("creds.json",scope)
 client = gspread.authorize(creds)
-sheet  = client.open_by_key(SHEET).sheet1
+sheet  = client.open_by_key(SHEET_ID).sheet1
 
 # Messages
 start_message   = "Starting Count!"
@@ -32,7 +32,13 @@ curr_members              = []
 curr_members_join_date    = []
 curr_members_contribution = []
 
-driver   = webdriver.Chrome("./drivers/chromedriver")
+try: 
+    driver   = webdriver.Chrome("./drivers/chromedriver")
+except:
+    print("Incompatable Version: Refer to https://stackoverflow.com/questions/38833589/oserror-errno-8-exec-format-error-selenium")
+    print(f"\n\n {sys.exc_info()}")
+    exit()
+
 keyboard = Controller()
 driver.get(str(CHANNEL))
 keyboard = Controller()
