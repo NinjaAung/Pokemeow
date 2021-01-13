@@ -12,13 +12,13 @@ config   = dotenv_values(".env")
 USERNAME = config["USER_NAME"]
 PASSWORD = config["USER_PASSWORD"]
 CHANNEL  = config["CALC_CHANNEL"]
-SHEET    = config["GOOGLE_SHEET"]
+SHEET_ID    = config["GOOGLE_SHEET_ID"]
 
 # Google Creds
 scope  = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/spreadsheets']
 creds  = ServiceAccountCredentials.from_json_keyfile_name("creds.json",scope)
 client = gspread.authorize(creds)
-sheet  = client.open_by_key(SHEET).sheet1
+sheet  = client.open_by_key(SHEET_ID).sheet1
 
 # Messages
 start_message   = "Starting Count!"
