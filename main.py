@@ -130,7 +130,8 @@ if data_exist:
             cell_today = gspread.models.Cell(cell.row,cell.col-1,member_contribution_dic[past_members_list[i].value])
             update.append(cell_today)
 
-    sheet.update_cells(member_left_list,'USER_ENTERED')
+    if member_left_list:
+        sheet.update_cells(member_left_list,'USER_ENTERED')
     sheet.update_cells(update, 'USER_ENTERED')
     sheet.sort((5,"des"),range="D2:F51")
 
@@ -149,8 +150,8 @@ if data_exist:
             member_added += 1
             update += cell_list
             print(f'\t{past_members_list[i].value} Added ✅')
-
-    sheet.update_cells(update,'USER_ENTERED')
+    if update:
+        sheet.update_cells(update,'USER_ENTERED')
     sheet.sort((5,"des"),range="D2:F51")
     sheet.update_cells(cell_list_days,'USER_ENTERED')
     print("Days Updated")
