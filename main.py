@@ -6,6 +6,7 @@ from datetime                       import datetime
 from time                           import sleep
 import gspread
 import re
+import sys
 
 # Config
 config   = dotenv_values(".env")
