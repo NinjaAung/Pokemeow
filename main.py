@@ -6,6 +6,7 @@ from datetime                       import datetime
 from time                           import sleep
 import gspread
 import re
+import sys
 
 # Config
 config   = dotenv_values(".env")
@@ -167,6 +168,8 @@ if data_exist:
             Daily_Catch = sheet.range('G2:G51')
             print("Congrats")
             for i in range(0,len(Daily_Catch)):
+                if not Daily_Catch[i].value:
+                    break
                 if int(Daily_Catch[i].value.replace(",","")) >= 1500:
                     print(sheet.cell(Daily_Catch[i].row,Daily_Catch[i].col-1).value)
 else:
