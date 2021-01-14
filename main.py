@@ -156,7 +156,7 @@ if data_exist:
             cell_list[2].value = curr_members[i]                # Member
             member_added += 1
             update += cell_list
-            print(f'\t{past_members_list[i].value} Added ✅')
+            print(f'\t{curr_members[i]} Added ✅')
     if update:
         sheet.update_cells(update,'USER_ENTERED')
     sheet.sort((5,"des"),range="D2:F51")
